@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CommonDefine.h" />
+    <ClInclude Include="MathematicDefine.h" />
     <ClInclude Include="PPMWriter.h" />
     <ClInclude Include="RayTrace.h" />
     <ClInclude Include="stdafx.h" />
