@@ -1,33 +1,44 @@
-#pragma once
-#include"CommonDefine.h"
+ï»¿#pragma once
+#include"Collider.h"
 
 namespace RayTraceRenderer
 {
 	class RayTraceCamera
 	{
-		//¸Ä³É¹Ò¸ötransform»òÕßĞ´³ÉunityµÄcomponentĞÎÊ½À´¿ØÖÆÎ»ÖÃ
+		//æ”¹æˆæŒ‚ä¸ªtransformæˆ–è€…å†™æˆunityçš„componentå½¢å¼æ¥æ§åˆ¶ä½ç½®
 		private:
-		//vector3»º´æ£¬ÓÃÓÚ¼Ó¿ìÔËËãËÙ¶È,Ö®ºó¿¼ÂÇ¿´¿´ÄÜ²»ÄÜ´Ó¾ØÕóÖĞÈ¡³ö
-		//static Vector3 s_vOrigin;
-		//static Vector3 s_vHorizontal;
-		//static Vector3 s_vVertical;
-		//static Vector3 s_vLowLeftCorner;
+		//vector3ç¼“å­˜ï¼Œç”¨äºåŠ å¿«è¿ç®—é€Ÿåº¦
+		Vector3 m_vOrigin;
+		Vector3 m_vHorizontal;
+		Vector3 m_vVertical;
+		Vector3 m_vLowLeftCorner;
 
 		protected:
 		double m_fWidth = 0;
 		double m_fHeight = 0;
 		double m_fAspect = 1;
 
+		//Color ** frameBuffer = nullptr; //åé¢å¯ä»¥å†å°è£…ä¸€å±‚
+
+
 		public:
-		RayTraceCamera(double width, double height) : 
-			m_fWidth(width), m_fHeight(height), m_fAspect(width / height) { }
+		RayTraceCamera(double width, double height) :
+			m_fWidth(width), m_fHeight(height), m_fAspect(width / height) {
+			//ä¹‹åè€ƒè™‘çœ‹çœ‹èƒ½ä¸èƒ½ä»çŸ©é˜µä¸­å–å‡º
+			m_vOrigin.SetTo(0, 0, 0);
+			m_vHorizontal.SetTo(m_fWidth, 0, 0);
+			m_vVertical.SetTo(0, m_fHeight, 0);
+			m_vLowLeftCorner.SetTo(-m_fWidth * 0.5, -m_fHeight * 0.5, -1);//æœ€åè¿™ä¸ªå€¼ä»¥åé€šè¿‡fovç®—å‡ºæ¥
+		}
 
 		~RayTraceCamera() {}
 
-		void DrawToBuffer(Color** frameBuffer, unsigned int pixelHeight);
+		void DrawToBuffer(Color** frameBuffer, const ColliderList& colliderObjects, unsigned int pixelHeight);
 
 		protected:
-		Color _RayCatchColor(const Ray& ray);
+		void _GetRay(Ray& ray, double u, double v);
+
+		void _RayCatchColor(const Ray& ray, const ColliderList& colliderObjects, Color& col);
 
 		private:
 

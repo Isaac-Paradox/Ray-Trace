@@ -4,9 +4,9 @@
 
 struct Color
 {
-	unsigned int r = 0;
-	unsigned int g = 0;
-	unsigned int b = 0;
+	double r = 0;
+	double g = 0;
+	double b = 0;
 
 	public:
 	Color(double _r = 0, double _g = 0, double _b = 0) :
@@ -38,7 +38,9 @@ class Ray
 		m_vOrigin(ori), m_vDirection(dir)
 	{}
 
-	inline Vector3 Origin() const { return m_vOrigin; }
-	inline Vector3 Direction() const { return m_vDirection; }
+	void ResetRay(const Vector3& ori, const Vector3& dir) { m_vOrigin = ori; m_vDirection = dir; }
+
+	inline const Vector3 Origin() const { return m_vOrigin; }
+	inline const Vector3 Direction() const { return m_vDirection; }
 	Vector3 GetPointAt(double t) const { return m_vOrigin + t * m_vDirection; }
 };

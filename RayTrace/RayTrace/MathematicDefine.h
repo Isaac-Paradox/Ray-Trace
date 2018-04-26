@@ -1,6 +1,10 @@
 #pragma once
 #include<math.h>
 
+const float fEpsilon = 1E-05F;
+
+bool FloatEqual(float lhs, float rhs);
+
 struct Vector3;
 struct Matrix4x4;
 struct Quaternion;
@@ -21,37 +25,31 @@ public:
 		x(copy.x), y(copy.y), z(copy.z)
 	{ }
 
-	void SetTo(double _x, double _y, double _z)
-	{
-		x = _x;
-		y = _y;
-		z = _z;
-	}
+	void SetTo(double _x, double _y, double _z) { x = _x; y = _y; z = _z; }
 
-	inline double Length()
-	{
-		return sqrt(x * x + y * y + z * z);
-	}
+	inline double Length() { return sqrt(x * x + y * y + z * z); }
 
-	inline void Normalize()
-	{
-		double length = Length();
-		x /= length;
-		y /= length;
-		z /= length;
-	}
+	inline void Normalize() { (*this) /= Length(); }
 
-	inline Vector3 Normalized()
+	inline Vector3 Normalized() const
 	{
 		Vector3 out(*this);
 		out.Normalize();
 		return out;
 	}
+
+	inline void operator += (const Vector3& value) { x += value.x; y += value.y; z += value.z; }
+
+	inline void operator -= (const Vector3& value) { x -= value.x; y -= value.y; z -= value.z; }
+
+	inline void operator *= (double k){ x *= k; y *= k; z *= k; }
+
+	inline void operator /= (double k) { k = 1 / k; x *= k; y *= k; z *= k; }
 };
 
 struct Matrix4x4
 {
-public:
+	public:
 	float m00;
 	float m33;
 	float m23;
@@ -70,17 +68,16 @@ public:
 	float m31;
 };
 
-inline Vector3 operator + (const Vector3& lhs, const Vector3& rhs)
-{
-	return Vector3(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z);
-}
+inline Vector3 operator + (const Vector3& lhs, const Vector3& rhs);
 
-inline Vector3 operator * (const Vector3& value, double k)
-{
-	return Vector3(value.x * k, value.y * k, value.z * k);
-}
+inline Vector3 operator - (const Vector3& lhs, const Vector3& rhs);
 
-inline Vector3 operator * (double k, const Vector3& value)
-{
-	return Vector3(value.x * k, value.y * k, value.z * k);
-}
+inline Vector3 operator * (const Vector3& value, double k);
+
+inline Vector3 operator * (double k, const Vector3& value);
+
+inline Vector3 operator / (const Vector3& value, double k);
+
+inline bool operator != (const Vector3& lhs, const Vector3& rhs);
+
+inline bool operator == (const Vector3& lhs, const Vector3& rhs);

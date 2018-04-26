@@ -1,30 +1,41 @@
 #include"RayTrace.h"
 
-void RayTraceRenderer::RayTraceCamera::DrawToBuffer(Color ** frameBuffer, unsigned int pixelHeight)
+void RayTraceRenderer::RayTraceCamera::DrawToBuffer(Color ** frameBuffer, const ColliderList& colliderObjects, unsigned int pixelHeight)
 {
 	unsigned int pixelWidth = m_fAspect * pixelHeight;
-
-	Vector3 s_vOrigin(0, 0, 0);
-	Vector3 s_vHorizontal(m_fWidth, 0, 0);
-	Vector3 s_vVertical(0, m_fHeight, 0);
-	Vector3 s_vLowLeftCorner(-m_fWidth * 0.5, -m_fHeight * 0.5, -1);//最后这个值以后通过fov算出来
-
+	
+	Ray ray;
 	for (size_t i = 0; i < pixelHeight; i++)
 	{
 		for (size_t j = 0; j < pixelWidth; j++)
 		{
-			Ray r(s_vOrigin, s_vLowLeftCorner + ((double)j / pixelWidth) * s_vHorizontal + ((double)i / pixelHeight) * s_vVertical);
-			Color color = _RayCatchColor(r);
-			frameBuffer[i][j].r = unsigned int(255.99 * color.r);
-			frameBuffer[i][j].g = unsigned int(255.99 * color.g);
-			frameBuffer[i][j].b = unsigned int(255.99 * color.b);
+			_GetRay(ray, (double)j / pixelWidth, (double)i / pixelHeight);
+			_RayCatchColor(ray, colliderObjects, frameBuffer[i][j]);
 		}
 	}
 }
 
-Color RayTraceRenderer::RayTraceCamera::_RayCatchColor(const Ray& ray)
+void RayTraceRenderer::RayTraceCamera::_GetRay(Ray & ray, double u, double v)
 {
-	float t = 0.5 * (ray.Direction().Normalized().y + 1);
-	float _1st = 1 - t;
-	return Color(_1st + t * 0.5, _1st + t * 0.7, _1st + t);
+	ray.ResetRay(m_vOrigin, m_vLowLeftCorner + u * m_vHorizontal + v * m_vVertical);
+}
+
+void RayTraceRenderer::RayTraceCamera::_RayCatchColor(const Ray & ray, const ColliderList& colliderObjects, Color & col)
+{
+	RayCastHitRecord record;
+	if (colliderObjects.Hit(ray, 0.0, 1000, record))
+	{
+		Vector3 vec = (record.hitPointNormal + 1) * 0.5;
+		col.r = vec.x;
+		col.g = vec.y;
+		col.b = vec.z;
+	}
+	else
+	{
+		float t = 0.5 * (ray.Direction().Normalized().y + 1);
+		float _1st = 1 - t;
+		col.r = _1st + t * 0.5;
+		col.g = _1st + t * 0.7;
+		col.b = _1st + t;
+	}
 }
