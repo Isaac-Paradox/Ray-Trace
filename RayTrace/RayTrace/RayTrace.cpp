@@ -2,7 +2,7 @@
 
 void RayTraceRenderer::RayTraceCamera::DrawToBuffer(Color ** frameBuffer, const ColliderList& colliderObjects, unsigned int pixelHeight)
 {
-	unsigned int pixelWidth = m_fAspect * pixelHeight;
+	unsigned int pixelWidth = unsigned int(m_fAspect * pixelHeight);
 	
 	Ray ray;
 	for (size_t i = 0; i < pixelHeight; i++)
@@ -17,7 +17,7 @@ void RayTraceRenderer::RayTraceCamera::DrawToBuffer(Color ** frameBuffer, const 
 
 void RayTraceRenderer::RayTraceCamera::_GetRay(Ray & ray, double u, double v)
 {
-	ray.ResetRay(m_vOrigin, m_vLowLeftCorner + u * m_vHorizontal + v * m_vVertical);
+	ray.ResetRay(m_vOrigin, (m_vLowLeftCorner + u * m_vHorizontal + v * m_vVertical));
 }
 
 void RayTraceRenderer::RayTraceCamera::_RayCatchColor(const Ray & ray, const ColliderList& colliderObjects, Color & col)
@@ -32,8 +32,8 @@ void RayTraceRenderer::RayTraceCamera::_RayCatchColor(const Ray & ray, const Col
 	}
 	else
 	{
-		float t = 0.5 * (ray.Direction().Normalized().y + 1);
-		float _1st = 1 - t;
+		double t = 0.5 * (ray.Direction().Normalized().y + 1);
+		double _1st = 1 - t;
 		col.r = _1st + t * 0.5;
 		col.g = _1st + t * 0.7;
 		col.b = _1st + t;

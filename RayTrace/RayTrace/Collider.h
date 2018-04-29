@@ -2,6 +2,8 @@
 #include<vector>
 #include"CommonDefine.h"
 
+#define _ISINVIEWFRUSTUM(v, max, min) (v < max && v > min)
+
 struct RayCastHitRecord {
 	float t;
 	Vector3 rayCastHitPoint;
@@ -10,7 +12,7 @@ struct RayCastHitRecord {
 
 class ICollider{
 	public:
-	virtual bool Hit(const Ray& ray, RayCastHitRecord& record) const = 0;
+	virtual bool Hit(const Ray& ray, float t_min, float t_max, RayCastHitRecord& record) const = 0;
 };
 
 class ColliderList

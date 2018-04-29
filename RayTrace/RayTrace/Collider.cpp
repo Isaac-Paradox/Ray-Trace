@@ -11,17 +11,14 @@ bool ColliderList::Hit(const Ray & ray, float near, float far, RayCastHitRecord 
 {
 	RayCastHitRecord tempRec;
 	bool hitAny = false;
-	double closest = far;
+	float closest = far;
 	for (const ICollider* collider : m_vColliders)
 	{
-		if (collider->Hit(ray, tempRec))
+		if (collider->Hit(ray, near, closest, tempRec))
 		{
-			if (tempRec.t < closest)
-			{
 				hitAny = true;
 				closest = tempRec.t;
 				record = tempRec;
-			}
 		}
 	}
 	return hitAny;

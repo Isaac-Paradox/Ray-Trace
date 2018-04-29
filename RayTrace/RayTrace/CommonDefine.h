@@ -9,8 +9,8 @@ struct Color
 	double b = 0;
 
 	public:
-	Color(double _r = 0, double _g = 0, double _b = 0) :
-		r(_r), g(_g), b(_b)
+	Color(double _r = 0, double _g = 0, double _b = 0)
+		: r(_r), g(_g), b(_b)
 	{ }
 
 	//Color(const Color& col):
@@ -34,13 +34,13 @@ class Ray
 
 	public:
 	Ray() {}
-	Ray(const Vector3& ori, const Vector3& dir):
-		m_vOrigin(ori), m_vDirection(dir)
+	Ray(const Vector3& ori, const Vector3& dir)
+		: m_vOrigin(ori), m_vDirection(dir)
 	{}
 
 	void ResetRay(const Vector3& ori, const Vector3& dir) { m_vOrigin = ori; m_vDirection = dir; }
 
-	inline const Vector3 Origin() const { return m_vOrigin; }
-	inline const Vector3 Direction() const { return m_vDirection; }
-	Vector3 GetPointAt(double t) const { return m_vOrigin + t * m_vDirection; }
+	inline const Vector3& Origin() const { return m_vOrigin; }
+	inline const Vector3& Direction() const { return m_vDirection; }
+	Vector3 GetPointAt(float t) const { return m_vOrigin + t * m_vDirection; }
 };

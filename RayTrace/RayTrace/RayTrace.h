@@ -14,21 +14,21 @@ namespace RayTraceRenderer
 		Vector3 m_vLowLeftCorner;
 
 		protected:
-		double m_fWidth = 0;
-		double m_fHeight = 0;
-		double m_fAspect = 1;
+		float m_fWidth = 0;
+		float m_fHeight = 0;
+		float m_fAspect = 1;
 
 		//Color ** frameBuffer = nullptr; //后面可以再封装一层
 
 
 		public:
-		RayTraceCamera(double width, double height) :
-			m_fWidth(width), m_fHeight(height), m_fAspect(width / height) {
+		RayTraceCamera(float width, float height)
+			: m_fWidth(width), m_fHeight(height), m_fAspect(width / height) {
 			//之后考虑看看能不能从矩阵中取出
 			m_vOrigin.SetTo(0, 0, 0);
 			m_vHorizontal.SetTo(m_fWidth, 0, 0);
 			m_vVertical.SetTo(0, m_fHeight, 0);
-			m_vLowLeftCorner.SetTo(-m_fWidth * 0.5, -m_fHeight * 0.5, -1);//最后这个值以后通过fov算出来
+			m_vLowLeftCorner.SetTo(-m_fWidth * 0.5f, -m_fHeight * 0.5f, -1);//最后这个值以后通过fov算出来
 		}
 
 		~RayTraceCamera() {}

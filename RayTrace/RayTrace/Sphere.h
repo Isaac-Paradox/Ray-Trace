@@ -4,20 +4,17 @@ class Sphere : public ICollider
 {
 	protected:
 	Vector3 m_vCenter;
-	float radius;
+	float m_fRadius = 1;
 
 	public:
 	Sphere();
+	Sphere(Vector3 center, float r);
+
 	~Sphere();
+
+	bool Hit(const Ray& ray, float t_min, float t_max, RayCastHitRecord& record) const override;
 
 	private:
 
 };
 
-Sphere::Sphere()
-{
-}
-
-Sphere::~Sphere()
-{
-}

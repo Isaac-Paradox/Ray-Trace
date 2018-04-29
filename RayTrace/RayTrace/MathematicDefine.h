@@ -3,7 +3,8 @@
 
 const float fEpsilon = 1E-05F;
 
-bool FloatEqual(float lhs, float rhs);
+inline bool FloatEqual(float lhs, float rhs);
+inline bool FloatEqual(double lhs, double rhs);
 
 struct Vector3;
 struct Matrix4x4;
@@ -11,23 +12,23 @@ struct Quaternion;
 
 struct Vector3
 {
-public:
-	double x = 0;
-	double y = 0;
-	double z = 0;
+	public:
+	float x = 0;
+	float y = 0;
+	float z = 0;
 
-public:
-	Vector3(double _x = 0, double _y = 0, double _z = 0):
-		x(_x), y(_y), z(_z)
+	public:
+	Vector3(float _x = 0, float _y = 0, float _z = 0)
+		: x(_x), y(_y), z(_z)
 	{ }
 
-	Vector3(const Vector3& copy):
+	Vector3(const Vector3& copy) :
 		x(copy.x), y(copy.y), z(copy.z)
 	{ }
 
-	void SetTo(double _x, double _y, double _z) { x = _x; y = _y; z = _z; }
+	void SetTo(float _x, float _y, float _z) { x = _x; y = _y; z = _z; }
 
-	inline double Length() { return sqrt(x * x + y * y + z * z); }
+	inline float Length() { return sqrtf(x * x + y * y + z * z); }
 
 	inline void Normalize() { (*this) /= Length(); }
 
@@ -38,13 +39,15 @@ public:
 		return out;
 	}
 
-	inline void operator += (const Vector3& value) { x += value.x; y += value.y; z += value.z; }
+	inline Vector3& operator += (float value) { x += value; y += value; z += value;  return *this; }
 
-	inline void operator -= (const Vector3& value) { x -= value.x; y -= value.y; z -= value.z; }
+	inline Vector3& operator += (const Vector3& value) { x += value.x; y += value.y; z += value.z;  return *this; }
 
-	inline void operator *= (double k){ x *= k; y *= k; z *= k; }
+	inline Vector3& operator -= (const Vector3& value) { x -= value.x; y -= value.y; z -= value.z; return *this; }
 
-	inline void operator /= (double k) { k = 1 / k; x *= k; y *= k; z *= k; }
+	inline Vector3& operator *= (float k) { x *= k; y *= k; z *= k; return *this; }
+
+	inline Vector3& operator /= (float k) { k = 1 / k; x *= k; y *= k; z *= k; return *this; }
 };
 
 struct Matrix4x4
@@ -68,15 +71,19 @@ struct Matrix4x4
 	float m31;
 };
 
+inline Vector3 operator + (const Vector3& value, float v);
+
 inline Vector3 operator + (const Vector3& lhs, const Vector3& rhs);
 
 inline Vector3 operator - (const Vector3& lhs, const Vector3& rhs);
 
-inline Vector3 operator * (const Vector3& value, double k);
+inline Vector3 operator * (const Vector3& value, float k);
 
-inline Vector3 operator * (double k, const Vector3& value);
+inline Vector3 operator * (float k, const Vector3& value);
 
-inline Vector3 operator / (const Vector3& value, double k);
+inline Vector3 operator / (const Vector3& value, float k);
+
+inline float dot(const Vector3& lhs, const Vector3& rhs);
 
 inline bool operator != (const Vector3& lhs, const Vector3& rhs);
 
