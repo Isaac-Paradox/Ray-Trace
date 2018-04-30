@@ -2,28 +2,25 @@
 
 #include "MathematicDefine.h"
 
-struct Color
+struct Color : public Vector3
 {
-	double r = 0;
-	double g = 0;
-	double b = 0;
-
 	public:
-	Color(double _r = 0, double _g = 0, double _b = 0)
-		: r(_r), g(_g), b(_b)
-	{ }
+	Color(float _x = 0, float _y = 0, float _z = 0) : Vector3(_x, _y, _z) {};
 
-	//Color(const Color& col):
-	//	r(col.r), g(col.g), b(col.b)
-	//{ }
-	//Color operator = (const Color col)
-	//{
-	//	r = col.r;
-	//	g = col.g;
-	//	b = col.b;
+	Color(Vector3 tran): Vector3(tran){}
 
-	//	return *this;
-	//}
+
+	inline float r() { return x; }
+
+	inline float g() { return y; }
+
+	inline float b() { return z; }
+
+	inline unsigned int R() { return unsigned int(255.99 * x); }
+
+	inline unsigned int G() { return unsigned int(255.99 * y); }
+
+	inline unsigned int B() { return unsigned int(255.99 * z); }
 };
 
 class Ray

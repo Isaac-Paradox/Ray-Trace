@@ -21,10 +21,10 @@ void PPMWriter::_WritePPMFile(std::ofstream& fStream)
 	fStream << m_nWidth << " " << m_nHeight << std::endl << "255" << std::endl;
 	for (int i = (int)m_nHeight - 1; i >= 0 ; --i)
 	{
-		for (int j = 0; j < (int)m_nWidth; ++j)
+		for (int j = 0; j < m_nWidth; ++j)
 		{
 			Color& col = m_pFrameBuffer[i][j];
-			fStream << unsigned int(255.99 * col.r) << " " << unsigned int(255.99 * col.g) << " " << unsigned int(255.99 * col.b) << std::endl;
+			fStream << col.R() << " " << col.G() << " " << col.B() << std::endl;
 		}
 	}
 }

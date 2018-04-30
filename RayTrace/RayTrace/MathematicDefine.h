@@ -3,6 +3,8 @@
 
 const float fEpsilon = 1E-05F;
 
+const float fPi = 3.1415926f;
+
 inline bool FloatEqual(float lhs, float rhs);
 inline bool FloatEqual(double lhs, double rhs);
 
@@ -88,3 +90,5 @@ inline float dot(const Vector3& lhs, const Vector3& rhs);
 inline bool operator != (const Vector3& lhs, const Vector3& rhs);
 
 inline bool operator == (const Vector3& lhs, const Vector3& rhs);
+
+double Random();

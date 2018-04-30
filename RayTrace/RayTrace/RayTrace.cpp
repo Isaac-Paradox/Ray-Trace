@@ -1,41 +1,69 @@
 #include"RayTrace.h"
-
 void RayTraceRenderer::RayTraceCamera::DrawToBuffer(Color ** frameBuffer, const ColliderList& colliderObjects, unsigned int pixelHeight)
 {
 	unsigned int pixelWidth = unsigned int(m_fAspect * pixelHeight);
 	
 	Ray ray;
-	for (size_t i = 0; i < pixelHeight; i++)
+	Color col;
+	Color color;
+	for (size_t i = 0; i < pixelHeight; ++i)
 	{
-		for (size_t j = 0; j < pixelWidth; j++)
+		for (size_t j = 0; j < pixelWidth; ++j)
 		{
-			_GetRay(ray, (double)j / pixelWidth, (double)i / pixelHeight);
-			_RayCatchColor(ray, colliderObjects, frameBuffer[i][j]);
+			color.SetTo(0, 0, 0);
+			for (size_t s = 0; s < c_nSample; ++s)
+			{
+				_GetRay(ray, float(j + Random()) / pixelWidth, float(i + Random()) / pixelHeight);
+				_RayCatchColor(ray, colliderObjects, col);
+				color += col;
+			}
+			color /= (float)c_nSample;
+			_WriteColor(frameBuffer[i][j], color);
 		}
 	}
 }
 
-void RayTraceRenderer::RayTraceCamera::_GetRay(Ray & ray, double u, double v)
+void RayTraceRenderer::RayTraceCamera::_GetRay(Ray & ray, float u, float v)
 {
 	ray.ResetRay(m_vOrigin, (m_vLowLeftCorner + u * m_vHorizontal + v * m_vVertical));
 }
 
-void RayTraceRenderer::RayTraceCamera::_RayCatchColor(const Ray & ray, const ColliderList& colliderObjects, Color & col)
+void RayTraceRenderer::RayTraceCamera::_RayCatchColor(Ray & ray, const ColliderList& colliderObjects, Color & col, int step)
 {
-	RayCastHitRecord record;
-	if (colliderObjects.Hit(ray, 0.0, 1000, record))
+	if (step > c_nMaxStep)
 	{
-		Vector3 vec = (record.hitPointNormal + 1) * 0.5;
-		col.r = vec.x;
-		col.g = vec.y;
-		col.b = vec.z;
+		float t = 0.5f * (ray.Direction().Normalized().y + 1);
+		col = (1.0f - t) * c_cSkyBoyLow + t * c_cSkyBoyTop;
+		return;
+	}
+	RayCastHitRecord record;
+	if (colliderObjects.Hit(ray, fEpsilon, 1000.0f, record))
+	{
+		Vector3 target;
+		{//后面通过材质产生
+			float angleTheta = float(2.0 * fPi * Random());
+			float anglePhi = float(2.0 * fPi * Random());
+			float radius = (float)Random();
+			float cosPhi = std::cos(anglePhi);
+			Vector3 p(radius * cosPhi * std::cos(angleTheta), radius * std::sin(anglePhi), radius * cosPhi * std::sin(angleTheta));
+			target = record.rayCastHitPoint + record.hitPointNormal +p;
+		}
+		ray.ResetRay(record.rayCastHitPoint, target - record.rayCastHitPoint);
+		_RayCatchColor(ray, colliderObjects, col, step + 1);
+		col *= 0.5;
 	}
 	else
 	{
-		double t = 0.5 * (ray.Direction().Normalized().y + 1);
-		double _1st = 1 - t;
-		col.r = _1st + t * 0.5;
-		col.g = _1st + t * 0.7;
-		col.b = _1st + t;
+		float t = 0.5f * (ray.Direction().Normalized().y + 1);
+		col = (1.0f - t) * c_cSkyBoyLow + t * c_cSkyBoyTop;
 	}
+}
+
+//用于矫正颜色
+void RayTraceRenderer::RayTraceCamera::_WriteColor(Color & target, const Color & value)
+{
+	//target.x = sqrtf(value.x);
+	//target.y = sqrtf(value.y);
+	//target.z = sqrtf(value.z);
+	target = value;
 }

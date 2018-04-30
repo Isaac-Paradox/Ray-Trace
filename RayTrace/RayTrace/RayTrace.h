@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include<math.h>
 #include"Collider.h"
 
 namespace RayTraceRenderer
@@ -6,7 +7,13 @@ namespace RayTraceRenderer
 	class RayTraceCamera
 	{
 		//改成挂个transform或者写成unity的component形式来控制位置
+
 		private:
+		const unsigned int c_nSample = 32;
+		const int c_nMaxStep = 32;
+		const Color c_cSkyBoyLow = Color(1.0f, 1.0f, 1.0f);//暂时代替天空盒用
+		const Color c_cSkyBoyTop = Color(0.5f, 0.7f, 1.0f);
+
 		//vector3缓存，用于加快运算速度
 		Vector3 m_vOrigin;
 		Vector3 m_vHorizontal;
@@ -36,9 +43,11 @@ namespace RayTraceRenderer
 		void DrawToBuffer(Color** frameBuffer, const ColliderList& colliderObjects, unsigned int pixelHeight);
 
 		protected:
-		void _GetRay(Ray& ray, double u, double v);
+		void _GetRay(Ray& ray, float u, float v);
 
-		void _RayCatchColor(const Ray& ray, const ColliderList& colliderObjects, Color& col);
+		void _RayCatchColor(Ray& ray, const ColliderList& colliderObjects, Color& col, int step = 0);//ray先不用const复用同一个，后面有问题了再每次重新生成一个
+
+		void _WriteColor(Color& target, const Color& value);
 
 		private:
 

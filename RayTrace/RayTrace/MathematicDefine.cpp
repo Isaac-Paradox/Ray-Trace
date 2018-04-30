@@ -54,3 +54,12 @@ extern inline bool operator == (const Vector3& lhs, const Vector3& rhs)
 {
 	return !(lhs != rhs);
 }
+
+extern double Random()
+{
+	static unsigned long long seed = 1;
+
+	seed = (0x5DEECE66DLL * seed + 0xB16) & 0xFFFFFFFFFFFFLL;
+	unsigned int x = seed >> 16;
+	return  ((double)x / 0x100000000LL);
+}
