@@ -1,4 +1,5 @@
 #pragma once
+#include<cassert>
 #include<math.h>
 
 const float fEpsilon = 1E-05F;
@@ -7,6 +8,10 @@ const float fPi = 3.1415926f;
 
 inline bool FloatEqual(float lhs, float rhs);
 inline bool FloatEqual(double lhs, double rhs);
+
+double Random();
+
+inline float Clamp(float value, float max, float min);
 
 struct Vector3;
 struct Matrix4x4;
@@ -106,5 +111,3 @@ inline float dot(const Vector3& lhs, const Vector3& rhs);
 inline bool operator != (const Vector3& lhs, const Vector3& rhs);
 
 inline bool operator == (const Vector3& lhs, const Vector3& rhs);
-
-double Random();

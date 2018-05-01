@@ -60,6 +60,11 @@ extern double Random()
 	static unsigned long long seed = 1;
 
 	seed = (0x5DEECE66DLL * seed + 0xB16) & 0xFFFFFFFFFFFFLL;
-	unsigned int x = seed >> 16;
+	unsigned int x = unsigned int(seed >> 16);
 	return  ((double)x / 0x100000000LL);
+}
+
+extern inline float Clamp(float value, float max, float min)
+{
+	return assert(max > min), (value < min) ? min : ((max < value) ? max : value);
 }
