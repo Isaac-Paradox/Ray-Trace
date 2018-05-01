@@ -19,6 +19,7 @@ bool ColliderList::Hit(const Ray & ray, float near, float far, RayCastHitRecord 
 				hitAny = true;
 				closest = tempRec.t;
 				record = tempRec;
+				record.mat = collider->m_pMaterial;
 		}
 	}
 	return hitAny;

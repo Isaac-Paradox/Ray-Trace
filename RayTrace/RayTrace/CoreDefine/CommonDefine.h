@@ -9,7 +9,6 @@ struct Color : public Vector3
 
 	Color(Vector3 tran): Vector3(tran){}
 
-
 	inline float r() { return x; }
 
 	inline float g() { return y; }
@@ -21,6 +20,8 @@ struct Color : public Vector3
 	inline unsigned int G() { return unsigned int(255.99 * y); }
 
 	inline unsigned int B() { return unsigned int(255.99 * z); }
+
+	inline Color& operator *= (const Color& value) { x *= value.x; y *= value.y; z *= value.z;  return *this; }
 };
 
 class Ray

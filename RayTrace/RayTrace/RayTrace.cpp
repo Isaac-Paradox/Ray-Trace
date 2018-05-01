@@ -32,25 +32,24 @@ void RayTraceRenderer::RayTraceCamera::_RayCatchColor(Ray & ray, const ColliderL
 {
 	if (step > c_nMaxStep)
 	{
-		float t = 0.5f * (ray.Direction().Normalized().y + 1);
-		col = (1.0f - t) * c_cSkyBoyLow + t * c_cSkyBoyTop;
+		col.SetTo(0.0f, 0.0f, 0.0f);
 		return;
 	}
 	RayCastHitRecord record;
+	Color attenuation;
 	if (colliderObjects.Hit(ray, fEpsilon, 1000.0f, record))
 	{
-		Vector3 target;
-		{//后面通过材质产生
-			float angleTheta = float(2.0 * fPi * Random());
-			float anglePhi = float(2.0 * fPi * Random());
-			float radius = (float)Random();
-			float cosPhi = std::cos(anglePhi);
-			Vector3 p(radius * cosPhi * std::cos(angleTheta), radius * std::sin(anglePhi), radius * cosPhi * std::sin(angleTheta));
-			target = record.rayCastHitPoint + record.hitPointNormal +p;
+		if (record.mat->Scatter(ray, record, attenuation))
+		{
+			_RayCatchColor(ray, colliderObjects, col, step + 1);
+			col *= attenuation;
+			return;
 		}
-		ray.ResetRay(record.rayCastHitPoint, target - record.rayCastHitPoint);
-		_RayCatchColor(ray, colliderObjects, col, step + 1);
-		col *= 0.5;
+		else
+		{
+			col.SetTo(0.0f, 0.0f, 0.0f);
+			return;
+		}
 	}
 	else
 	{

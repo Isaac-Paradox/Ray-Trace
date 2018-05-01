@@ -7,8 +7,8 @@ class Sphere : public ICollider
 	float m_fRadius = 1;
 
 	public:
-	Sphere();
-	Sphere(Vector3 center, float r);
+	Sphere(IMaterial* mat);
+	Sphere(Vector3 center, float r, IMaterial* mat);
 
 	~Sphere();
 

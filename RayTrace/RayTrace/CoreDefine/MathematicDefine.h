@@ -28,6 +28,22 @@ struct Vector3
 		x(copy.x), y(copy.y), z(copy.z)
 	{ }
 
+	inline static Vector3 Zero()    { return Vector3( 0.0f,  0.0f,  0.0f); }
+
+	inline static Vector3 One()     { return Vector3( 1.0f,  1.0f,  1.0f); }
+
+	inline static Vector3 Forward() { return Vector3( 0.0f,  0.0f,  1.0f); }
+
+	inline static Vector3 Back()    { return Vector3( 0.0f,  0.0f, -1.0f); }
+
+	inline static Vector3 Left()    { return Vector3(-1.0f,  0.0f,  0.0f); }
+
+	inline static Vector3 Right()   { return Vector3( 1.0f,  0.0f,  0.0f); }
+
+	inline static Vector3 Up()      { return Vector3( 0.0f,  1.0f,  0.0f); }
+
+	inline static Vector3 Down()    { return Vector3( 0.0f, -1.0f,  0.0f); }
+
 	void SetTo(float _x, float _y, float _z) { x = _x; y = _y; z = _z; }
 
 	inline float Length() { return sqrtf(x * x + y * y + z * z); }
