@@ -100,6 +100,8 @@ inline Vector3 operator + (const Vector3& lhs, const Vector3& rhs);
 
 inline Vector3 operator - (const Vector3& lhs, const Vector3& rhs);
 
+inline Vector3 operator - (const Vector3& value);
+
 inline Vector3 operator * (const Vector3& value, float k);
 
 inline Vector3 operator * (float k, const Vector3& value);

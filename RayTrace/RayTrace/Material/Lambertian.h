@@ -1,6 +1,6 @@
 #pragma once
 #include "Material.h"
-class Lambertian : public IRandomReflectMaterial
+class Lambertian : public IReflectObjectMaterial
 {
 	protected:
 	Vector3 m_vAlbedo;

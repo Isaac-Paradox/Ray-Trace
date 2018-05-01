@@ -1,6 +1,6 @@
 #pragma once
 #include "Material.h"
-class TestMaterial : public IRandomReflectMaterial
+class TestMaterial : public IReflectObjectMaterial
 {
 	public:
 	bool Scatter(Ray& ray, const RayCastHitRecord& record, Color& attenuation) const override {

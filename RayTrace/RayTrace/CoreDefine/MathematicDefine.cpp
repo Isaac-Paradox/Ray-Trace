@@ -24,6 +24,11 @@ extern inline Vector3 operator - (const Vector3& lhs, const Vector3& rhs)
 	return Vector3(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z);
 }
 
+extern inline Vector3 operator-(const Vector3 & value)
+{
+	return Vector3(-value.x, -value.y, -value.z);
+}
+
 extern inline Vector3 operator * (const Vector3& value, float k)
 {
 	return Vector3(value.x * k, value.y * k, value.z * k);

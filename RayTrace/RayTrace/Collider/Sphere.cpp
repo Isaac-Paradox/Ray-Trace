@@ -1,8 +1,8 @@
 #include"Sphere.h"
-Sphere::Sphere(IMaterial* mat) : ICollider(mat)
+Sphere::Sphere(IBaseMaterial* mat) : ICollider(mat)
 { }
 
-Sphere::Sphere(Vector3 center, float r, IMaterial* mat)
+Sphere::Sphere(Vector3 center, float r, IBaseMaterial* mat)
 	: m_vCenter(center), m_fRadius(r), ICollider(mat)
 { }
 

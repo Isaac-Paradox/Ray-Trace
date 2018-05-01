@@ -4,22 +4,22 @@
 
 #define _ISINVIEWFRUSTUM(v, max, min) (v < max && v > min)
 
-class IMaterial;
+class IBaseMaterial;
 
 struct RayCastHitRecord {
 	float t;
 	Vector3 rayCastHitPoint;
 	Vector3 hitPointNormal;
-	IMaterial* mat = nullptr;
+	IBaseMaterial* mat = nullptr;
 };
 
 class ICollider{
 	public:
 	//后面重构把这两个对象用Renderer统合起来
-	IMaterial* m_pMaterial = nullptr;
+	IBaseMaterial* m_pMaterial = nullptr;
 
 	public:
-	ICollider(IMaterial* mat) : m_pMaterial(mat){}
+	ICollider(IBaseMaterial* mat) : m_pMaterial(mat){}
 
 	virtual bool Hit(const Ray& ray, float t_min, float t_max, RayCastHitRecord& record) const = 0;
 };
