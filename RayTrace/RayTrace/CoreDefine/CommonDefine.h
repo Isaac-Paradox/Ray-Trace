@@ -7,7 +7,7 @@ struct Color : public Vector3
 	public:
 	Color(float _x = 0, float _y = 0, float _z = 0) : Vector3(_x, _y, _z) {};
 
-	Color(Vector3 tran): Vector3(tran){}
+	Color(const Vector3& tran): Vector3(tran){}
 
 	inline float r() { return x; }
 
