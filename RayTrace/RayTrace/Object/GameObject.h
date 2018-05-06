@@ -40,17 +40,17 @@ class Transform {
 
 	inline void LookAt(const Vector3& worldPosition, const Vector3& worldUp) { _LookAt(m_vPosition, worldPosition, worldUp); }
 
-	Vector3 Forward() const {Vector3 _out(m_mMatrix.GetColumn(2)); _out.Normalize(); return _out; }
+	Vector3 Forward() const { _CheckMatrixUpdate();  Vector3 _out(m_mMatrix.GetColumn(2)); _out.Normalize(); return _out; }
 
-	Vector3 Back() const { Vector3 _out(m_mMatrix.GetColumn(2)); _out.Normalize(); return -_out; }
+	Vector3 Back() const { _CheckMatrixUpdate(); Vector3 _out(m_mMatrix.GetColumn(2)); _out.Normalize(); return -_out; }
 
-	Vector3 Right() const { Vector3 _out(m_mMatrix.GetColumn(0)); _out.Normalize(); return _out; }
+	Vector3 Right() const { _CheckMatrixUpdate(); Vector3 _out(m_mMatrix.GetColumn(0)); _out.Normalize(); return _out; }
 
-	Vector3 Left() const { Vector3 _out(m_mMatrix.GetColumn(0)); _out.Normalize(); return -_out; }
+	Vector3 Left() const { _CheckMatrixUpdate(); Vector3 _out(m_mMatrix.GetColumn(0)); _out.Normalize(); return -_out; }
 
-	Vector3 Up() const { Vector3 _out(m_mMatrix.GetColumn(1)); _out.Normalize(); return _out; }
+	Vector3 Up() const { _CheckMatrixUpdate(); Vector3 _out(m_mMatrix.GetColumn(1)); _out.Normalize(); return _out; }
 
-	Vector3 Down() const { Vector3 _out(m_mMatrix.GetColumn(1)); _out.Normalize(); return -_out; }
+	Vector3 Down() const { _CheckMatrixUpdate(); Vector3 _out(m_mMatrix.GetColumn(1)); _out.Normalize(); return -_out; }
 
 	protected:
 	Transform() {};
@@ -93,7 +93,11 @@ class GameObject {
 	inline Transform& GetTransform() { return m_tTransform; }
 
 	template<typename T, class ...Args>
-	T& AddComponent(Args && ...args);
+	T & AddComponent(Args && ...args) {
+		T* _newComponent = new T(*this, std::forward<Args>(args)...);
+		m_vComponents.push_back(_newComponent);
+		return *_newComponent;
+	}
 
 	private:
 

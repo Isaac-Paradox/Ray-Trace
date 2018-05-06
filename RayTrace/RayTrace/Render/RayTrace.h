@@ -39,6 +39,7 @@ namespace RayTraceRenderer
 		bool m_bPerspectiveDataDirty = true;
 
 		public:
+		RayTraceCamera(GameObject& gobj, RenderTarget & target) : IComponent(gobj), m_rTarget(target) {}//后面通过factory把构造函数写到protected里面
 		~RayTraceCamera() {}
 
 		void Draw(const ColliderList& colliderObjects);
@@ -64,7 +65,6 @@ namespace RayTraceRenderer
 		inline void SetFov(float value) { m_fFov = value; m_bPerspectiveDataDirty = true; }
 
 		protected:
-		RayTraceCamera(GameObject& gobj, RenderTarget & target) : IComponent(gobj), m_rTarget(target) {}
 
 		inline void _GetRay(Ray& ray, float u, float v) const;
 

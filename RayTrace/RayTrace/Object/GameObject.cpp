@@ -6,13 +6,6 @@ GameObject::~GameObject() {
 	m_vComponents.clear();
 }
 
-template<typename T, class ...Args>
-inline T & GameObject::AddComponent(Args && ...args) {
-	IComponent* _newComponent = new T(std::forward<Args>(args)...);
-	m_vComponents.push_back(_newComponent);
-	return *_newComponent;
-}
-
 void Transform::_CheckMatrixUpdate() const {
 	if (m_bMatrixDirty) {
 		_UpdateMatrix();
@@ -47,7 +40,7 @@ void Transform::_LookAt(const Vector3 & from, const Vector3 & to, const Vector3 
 	}
 
 	x.Normalize();
-	Vector3 y = Cross(z, x);
+	Vector3 y = Cross(x, z);
 
 	//m_mMatrix.m00 = m_vScale.x * x.x; m_mMatrix.m10 = m_vScale.y * y.x; m_mMatrix.m20 = m_vScale.z * z.x; m_mMatrix.m30 = 0;
 	//m_mMatrix.m01 = m_vScale.x * x.y; m_mMatrix.m11 = m_vScale.y * y.y; m_mMatrix.m21 = m_vScale.z * z.y; m_mMatrix.m31 = 0;

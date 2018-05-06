@@ -125,30 +125,28 @@ Vector3 Quaternion::ToEulerAngle() const {
 	}
 }
 
-Matrix4x4 Matrix4x4::ToTRS(const Vector3 & pos, const Quaternion & q, const Vector3 & s) {
-	Matrix4x4 _out;
+void Matrix4x4::ToTRS(const Vector3 & pos, const Quaternion & q, const Vector3 & s) {
 	float qX = q.x;
 	float qY = q.y;
 	float qZ = q.z;
 	float qW = q.w;
 
-	_out.m00 = (s.x * (1 - 2 * (qY * qY + qZ * qZ)));
-	_out.m01 = (s.y * (2 * (qX * qY - qZ * qW)));
-	_out.m02 = (s.z * (2 * (qX * qZ + qY * qW)));
-	_out.m03 = pos.x;
-	_out.m10 = (s.x * (2 * (qX * qY + qZ * qW)));
-	_out.m11 = (s.y * (1 - 2 * (qX * qX + qZ * qZ)));
-	_out.m12 = (s.z * (2 * (qY * qZ - qX * qW)));
-	_out.m13 = pos.y;
-	_out.m20 = (s.x * (2 * (qX * qZ - qY * qW)));
-	_out.m21 = (s.y * (2 * (qY * qZ + qX * qW)));
-	_out.m22 = (s.z * (1 - 2 * (qX * qX + qY * qY)));
-	_out.m23 = pos.z;
-	_out.m30 = 0;
-	_out.m31 = 0;
-	_out.m32 = 0;
-	_out.m33 = 1;
-	return _out;
+	 m00 = (s.x * (1 - 2 * (qY * qY + qZ * qZ)));
+	 m01 = (s.y * (2 * (qX * qY - qZ * qW)));
+	 m02 = (s.z * (2 * (qX * qZ + qY * qW)));
+	 m03 = pos.x;
+	 m10 = (s.x * (2 * (qX * qY + qZ * qW)));
+	 m11 = (s.y * (1 - 2 * (qX * qX + qZ * qZ)));
+	 m12 = (s.z * (2 * (qY * qZ - qX * qW)));
+	 m13 = pos.y;
+	 m20 = (s.x * (2 * (qX * qZ - qY * qW)));
+	 m21 = (s.y * (2 * (qY * qZ + qX * qW)));
+	 m22 = (s.z * (1 - 2 * (qX * qX + qY * qY)));
+	 m23 = pos.z;
+	 m30 = 0;
+	 m31 = 0;
+	 m32 = 0;
+	 m33 = 1;
 }
 
 Vector4 Matrix4x4::GetColumn(int index) {

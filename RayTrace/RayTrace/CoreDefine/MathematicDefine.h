@@ -110,7 +110,7 @@ struct Matrix4x4
 
 	inline static Matrix4x4 TRS(const Vector3& pos, const Quaternion& q, const Vector3& s) { Matrix4x4 _out; _out.ToTRS(pos, q, s); return _out; }
 
-	Matrix4x4 ToTRS(const Vector3& pos, const Quaternion& q, const Vector3& s);
+	void ToTRS(const Vector3& pos, const Quaternion& q, const Vector3& s);
 
 	Vector4 GetColumn(int index);
 
