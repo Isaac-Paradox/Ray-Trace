@@ -5,5 +5,5 @@ bool Metal::Scatter(Ray & ray, const RayCastHitRecord & record, Color & attenuat
 	Vector3 refl = _Reflect(ray.Direction(), record.hitPointNormal);
 	ray.ResetRay(record.rayCastHitPoint, refl + RandomSphere(m_fFuzz));
 	attenuation = m_vAlbedo;
-	return dot(ray.Direction(), record.hitPointNormal) > 0;
+	return Dot(ray.Direction(), record.hitPointNormal) > 0;
 }

@@ -1,15 +1,14 @@
 ﻿#pragma once
 #include<math.h>
+#include "../Object/GameObject.h"
 #include "RenderTarget.h"
 #include"../Collider/Collider.h"
 #include"../Material/Material.h"
 
 namespace RayTraceRenderer
 {
-	class RayTraceCamera
+	class RayTraceCamera : public IComponent
 	{
-		//改成挂个transform或者写成unity的component形式来控制位置
-
 		private:
 		const unsigned int c_nSample = 16;
 		const int c_nMaxStep = 64;
@@ -40,9 +39,6 @@ namespace RayTraceRenderer
 		bool m_bPerspectiveDataDirty = true;
 
 		public:
-		RayTraceCamera(RenderTarget & target)
-			: m_rTarget(target) { }
-
 		~RayTraceCamera() {}
 
 		void Draw(const ColliderList& colliderObjects);
@@ -68,9 +64,11 @@ namespace RayTraceRenderer
 		inline void SetFov(float value) { m_fFov = value; m_bPerspectiveDataDirty = true; }
 
 		protected:
-		void _GetRay(Ray& ray, float u, float v);
+		RayTraceCamera(GameObject& gobj, RenderTarget & target) : IComponent(gobj), m_rTarget(target) {}
 
-		void _RayCatchColor(Ray& ray, const ColliderList& colliderObjects, Color& col, int step = 0);//ray先不用const复用同一个，后面有问题了再每次重新生成一个
+		inline void _GetRay(Ray& ray, float u, float v) const;
+
+		void _RayCatchColor(Ray& ray, const ColliderList& colliderObjects, Color& col, int step = 0);//ray不用const,复用同一个,减少内存申请释放
 
 		void _WriteColor(Color& target, const Color& value);
 

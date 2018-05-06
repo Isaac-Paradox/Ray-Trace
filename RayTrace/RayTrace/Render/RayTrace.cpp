@@ -25,8 +25,7 @@ void RayTraceRenderer::RayTraceCamera::Draw(const ColliderList& colliderObjects)
 	}
 }
 
-void RayTraceRenderer::RayTraceCamera::_GetRay(Ray & ray, float u, float v)
-{
+inline void RayTraceRenderer::RayTraceCamera::_GetRay(Ray & ray, float u, float v) const {
 	ray.ResetRay(m_vOrigin, (m_vLowLeftCorner + u * m_vHorizontal + v * m_vVertical));
 }
 
@@ -61,14 +60,13 @@ void RayTraceRenderer::RayTraceCamera::_WriteColor(Color & target, const Color &
 }
 
 void RayTraceRenderer::RayTraceCamera::_UpdateRayScanData() {
-	float height = std::tanf(m_fFov * fPi / 360);//可以考虑手算1 / 360 然后直接填字面值
+	float height = std::tanf(m_fFov * PI / 360);//可以考虑手算1 / 360 然后直接填字面值
 	float widht = Aspect() * height;
 
-	//之后考虑看看能不能从矩阵中取出
-	m_vOrigin.SetTo(0, 0, 0);
-	m_vHorizontal.SetTo(1, 0, 0);
-	m_vVertical.SetTo(0, 1, 0);
-	Vector3 forward = Vector3::Forward();//这个的长度和height使用同一个一个单位长度
+	m_vOrigin = m_tTransform.GetLocalPosition();
+	m_vHorizontal = m_tTransform.Right();
+	m_vVertical = m_tTransform.Up();
+	Vector3 forward = m_tTransform.Forward();//这个的长度和height使用同一个一个单位长度
 
 	m_vHorizontal *= widht;
 	m_vVertical *= height;

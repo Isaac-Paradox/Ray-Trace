@@ -6,7 +6,7 @@ bool Dielectric::Scatter(Ray & ray, const RayCastHitRecord & record, Color & att
 	float _ior;
 	attenuation.SetTo(1.0f, 1.0f, 1.0f);
 
-	float _fDirLengthMulCos = dot(ray.Direction(), record.hitPointNormal);
+	float _fDirLengthMulCos = Dot(ray.Direction(), record.hitPointNormal);
 	if (_fDirLengthMulCos > 0) {
 		_normal = -record.hitPointNormal;
 		_ior = m_fIor;

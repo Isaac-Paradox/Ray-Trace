@@ -12,9 +12,9 @@ Sphere::~Sphere()
 bool Sphere::Hit(const Ray & ray, float t_min, float t_max, RayCastHitRecord & record) const
 {
 	Vector3 oc = ray.Origin() - m_vCenter;
-	float a = dot(ray.Direction(), ray.Direction());
-	float b = dot(oc, ray.Direction());
-	float c = dot(oc, oc) - m_fRadius * m_fRadius;
+	float a = Dot(ray.Direction(), ray.Direction());
+	float b = Dot(oc, ray.Direction());
+	float c = Dot(oc, oc) - m_fRadius * m_fRadius;
 	float delta = b * b - a * c;//b^2 - 4ac 4与b^2中的2约去
 	if (delta >= 0)
 	{
