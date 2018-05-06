@@ -10,7 +10,7 @@ namespace RayTraceRenderer
 		//改成挂个transform或者写成unity的component形式来控制位置
 
 		private:
-		const unsigned int c_nSample = 32;
+		const unsigned int c_nSample = 16;
 		const int c_nMaxStep = 64;
 		const Color c_cSkyBoyLow = Color(1.0f, 1.0f, 1.0f);//暂时代替天空盒用
 		const Color c_cSkyBoyTop = Color(0.5f, 0.7f, 1.0f);

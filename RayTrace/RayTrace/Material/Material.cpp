@@ -22,7 +22,7 @@ bool IReflectObjectMaterial::_Refract(const Vector3 & v, const Vector3 & n, floa
 	float delta = 1.0f - ior * ior * (1 - _dot * _dot);
 	if (delta > 0)
 	{
-		refracted = ior * (v - n * _dot) - n * sqrtf(delta);
+		refracted = ior * (uv - n * _dot) - n * sqrtf(delta);
 		return true;
 	}
 	else

@@ -51,7 +51,7 @@ struct Vector3
 
 	void SetTo(float _x, float _y, float _z) { x = _x; y = _y; z = _z; }
 
-	inline float Length() { return sqrtf(x * x + y * y + z * z); }
+	inline float Length() const { return sqrtf(x * x + y * y + z * z); }
 
 	inline void Normalize() { (*this) /= Length(); }
 

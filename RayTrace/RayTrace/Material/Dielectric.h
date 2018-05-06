@@ -10,4 +10,7 @@ class Dielectric : public IReflectObjectMaterial
 	Dielectric(float ior) : m_fIor(ior) {};
 
 	bool Scatter(Ray& ray, const RayCastHitRecord& record, Color& attenuation) const override;
+
+	protected:
+	inline float _Schlick(float cos, float ior) const;
 };
