@@ -1,4 +1,4 @@
-#include "GameObject.h"
+Ôªø#include "GameObject.h"
 GameObject::~GameObject() {
 	for (IComponent* ptr : m_vComponents) {
 		delete ptr;
@@ -24,7 +24,7 @@ void Transform::_LookAt(const Vector3 & from, const Vector3 & to, const Vector3 
 	}
 
 	z.Normalize();
-	Vector3 x = Cross(z, up);
+	Vector3 x = Cross(up, z);
 
 	if (x.Length() == 0) {
 		// up and z are parallel
@@ -36,18 +36,18 @@ void Transform::_LookAt(const Vector3 & from, const Vector3 & to, const Vector3 
 		}
 
 		z.Normalize();
-		x = Cross(z, up);
+		x = Cross(up, z);
 	}
 
 	x.Normalize();
-	Vector3 y = Cross(x, z);
+	Vector3 y = Cross(z, x);
 
 	//m_mMatrix.m00 = m_vScale.x * x.x; m_mMatrix.m10 = m_vScale.y * y.x; m_mMatrix.m20 = m_vScale.z * z.x; m_mMatrix.m30 = 0;
 	//m_mMatrix.m01 = m_vScale.x * x.y; m_mMatrix.m11 = m_vScale.y * y.y; m_mMatrix.m21 = m_vScale.z * z.y; m_mMatrix.m31 = 0;
 	//m_mMatrix.m02 = m_vScale.x * x.z; m_mMatrix.m12 = m_vScale.y * y.z; m_mMatrix.m22 = m_vScale.z * z.z; m_mMatrix.m32 = 0;
 	//m_mMatrix.m03 = from.x;           m_mMatrix.m13 = from.y;           m_mMatrix.m23 = from.z;           m_mMatrix.m33 = 1;
 
-	//…œ√Êµƒ÷±Ω”∏≥÷µªÚ–Ìª·øÏ“ªµ„
+	//‰∏äÈù¢ÁöÑÁõ¥Êé•ËµãÂÄºÊàñËÆ∏‰ºöÂø´‰∏ÄÁÇπ
 	m_bMatrixDirty = true;
 
 	m_qRotation.w = sqrtf(1 + x.x + y.y + z.z) * 0.5f;
