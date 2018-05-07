@@ -53,8 +53,8 @@ void Transform::_LookAt(const Vector3 & from, const Vector3 & to, const Vector3 
 	m_qRotation.w = sqrtf(1 + x.x + y.y + z.z) * 0.5f;
 	float k = 1 / (4.0f * m_qRotation.w);
 	m_qRotation.x = (y.z - z.y) * k;
-	m_qRotation.y = (x.z - z.x) * k;
-	m_qRotation.z = (y.x - x.y) * k;
+	m_qRotation.y = (z.x - x.z) * k;
+	m_qRotation.z = (x.y - y.x) * k;
 }
 
 IComponent::IComponent(GameObject & gobj) : m_gGameObject(gobj), m_tTransform(gobj.GetTransform()) {}
