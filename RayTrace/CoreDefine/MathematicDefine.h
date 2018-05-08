@@ -49,21 +49,21 @@ struct Vector3 {
 	Vector3(const Vector4& copy) :
 		x(copy.x), y(copy.y), z(copy.z) {}
 
-	inline static Vector3 Zero() { return Vector3(0.0f, 0.0f, 0.0f); }
+	inline static const Vector3& Zero() { static Vector3 zero(0.0f, 0.0f, 0.0f); return zero; }
 
-	inline static Vector3 One() { return Vector3(1.0f, 1.0f, 1.0f); }
+	inline static const Vector3& One() { static Vector3 one(1.0f, 1.0f, 1.0f); return one; }
 
-	inline static Vector3 Forward() { return Vector3(0.0f, 0.0f, 1.0f); }
+	inline static const Vector3& Forward() { static Vector3 forward(0.0f, 0.0f, 1.0f); return forward; }
 
-	inline static Vector3 Back() { return Vector3(0.0f, 0.0f, -1.0f); }
+	inline static const Vector3& Back() { static Vector3 back(0.0f, 0.0f, -1.0f); return back; }
 
-	inline static Vector3 Left() { return Vector3(-1.0f, 0.0f, 0.0f); }
+	inline static const Vector3& Left() { static Vector3 left(-1.0f, 0.0f, 0.0f); return left; }
 
-	inline static Vector3 Right() { return Vector3(1.0f, 0.0f, 0.0f); }
+	inline static const Vector3& Right() { static Vector3 right(1.0f, 0.0f, 0.0f); return right; }
 
-	inline static Vector3 Up() { return Vector3(0.0f, 1.0f, 0.0f); }
+	inline static const Vector3& Up() { static Vector3 up(0.0f, 1.0f, 0.0f); return up; }
 
-	inline static Vector3 Down() { return Vector3(0.0f, -1.0f, 0.0f); }
+	inline static const Vector3& Down() { static Vector3 down(0.0f, -1.0f, 0.0f); return down; }
 
 	void SetTo(float _x, float _y, float _z) { x = _x; y = _y; z = _z; }
 

@@ -29,8 +29,8 @@ inline void RayTraceRenderer::RayTraceCamera::_GetRay(Ray & ray, float u, float 
 	if (m_bOpenDepthOfField) {
 		float angle = float(2.0 * PI * Random());
 		float radius = m_fLensRadius * (float)Random();
-		Vector3 offset = radius * (m_vHorizontal * std::sinf(angle) + m_vVertical * std::cosf(angle));
-		ray.ResetRay(m_vOrigin + offset, m_vLowLeftCorner + u * m_fFocus * m_vHorizontal + v * m_fFocus * m_vVertical + offset);
+		Vector3 offset = radius * (m_vRight * std::sinf(angle) + m_vUp * std::cosf(angle));
+		ray.ResetRay(m_vOrigin + offset, m_vLowLeftCorner + u * m_vHorizontal + v * m_vVertical - offset);
 	} else {
 		ray.ResetRay(m_vOrigin, (m_vLowLeftCorner + u * m_vHorizontal + v * m_vVertical));
 	}
@@ -71,18 +71,20 @@ void RayTraceRenderer::RayTraceCamera::_UpdateRayScanData() {
 	float widht = Aspect() * height;
 
 	m_vOrigin = m_tTransform.GetLocalPosition();
-	m_vHorizontal = m_tTransform.Right();
-	m_vVertical = m_tTransform.Up();
+	m_vRight = m_tTransform.Right();
+	m_vUp = m_tTransform.Up();
 	Vector3 forward = m_tTransform.Forward();//这个的长度和height使用同一个一个单位长度
 
-	m_vHorizontal *= widht;
-	m_vVertical *= height;
+	m_vHorizontal = m_vRight * widht;
+	m_vVertical = m_vUp * height;
+
+	if (m_bOpenDepthOfField) {
+		m_vHorizontal *= m_fFocus;
+		m_vVertical *= m_fFocus;
+		forward *= m_fFocus;
+	}
 
 	m_vLowLeftCorner = -(m_vHorizontal + m_vVertical) * 0.5f + forward;//这里指的是方向，因为如果使用位置就需要在这里加上ori然后再在getray的地方再减回去，没有必要
 	
-	if (m_bOpenDepthOfField) {
-		m_vLowLeftCorner *= m_fFocus;
-	}
-
 	m_bPerspectiveDataDirty = false;
 }

@@ -21,6 +21,9 @@ namespace RayTraceRenderer
 		Vector3 m_vVertical;
 		Vector3 m_vLowLeftCorner;
 
+		Vector3 m_vUp;
+		Vector3 m_vRight;
+
 		protected:
 		RenderTarget & m_rTarget;
 

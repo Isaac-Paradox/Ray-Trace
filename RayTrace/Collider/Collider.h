@@ -1,5 +1,6 @@
 #pragma once
 #include<vector>
+#include<algorithm>
 #include"../CoreDefine/CommonDefine.h"
 
 #define _ISINVIEWFRUSTUM(v, max, min) (v < max && v > min)
@@ -33,6 +34,8 @@ class ColliderList
 
 	public:
 	unsigned int AddCollider(const ICollider* collider);
+
+	bool RemoveCollider(unsigned int handle);
 
 	bool Hit(const Ray& ray, float near, float far, RayCastHitRecord& record) const;
 
