@@ -26,7 +26,14 @@ void RayTraceRenderer::RayTraceCamera::Draw(const ColliderList& colliderObjects)
 }
 
 inline void RayTraceRenderer::RayTraceCamera::_GetRay(Ray & ray, float u, float v) const {
-	ray.ResetRay(m_vOrigin, (m_vLowLeftCorner + u * m_vHorizontal + v * m_vVertical));
+	if (m_bOpenDepthOfField) {
+		float angle = float(2.0 * PI * Random());
+		float radius = m_fLensRadius * (float)Random();
+		Vector3 offset = radius * (m_vHorizontal * std::sinf(angle) + m_vVertical * std::cosf(angle));
+		ray.ResetRay(m_vOrigin + offset, m_vLowLeftCorner + u * m_fFocus * m_vHorizontal + v * m_fFocus * m_vVertical + offset);
+	} else {
+		ray.ResetRay(m_vOrigin, (m_vLowLeftCorner + u * m_vHorizontal + v * m_vVertical));
+	}
 }
 
 void RayTraceRenderer::RayTraceCamera::_RayCatchColor(Ray & ray, const ColliderList& colliderObjects, Color & col, int step) {
@@ -70,7 +77,12 @@ void RayTraceRenderer::RayTraceCamera::_UpdateRayScanData() {
 
 	m_vHorizontal *= widht;
 	m_vVertical *= height;
-	m_vLowLeftCorner = -(m_vHorizontal + m_vVertical) * 0.5f + forward;
+
+	m_vLowLeftCorner = -(m_vHorizontal + m_vVertical) * 0.5f + forward;//这里指的是方向，因为如果使用位置就需要在这里加上ori然后再在getray的地方再减回去，没有必要
+	
+	if (m_bOpenDepthOfField) {
+		m_vLowLeftCorner *= m_fFocus;
+	}
 
 	m_bPerspectiveDataDirty = false;
 }

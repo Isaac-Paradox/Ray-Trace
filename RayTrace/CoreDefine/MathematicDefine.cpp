@@ -56,6 +56,10 @@ extern inline Vector3 Cross(const Vector3 & lhs, const Vector3 & rhs) {
 		lhs.x * rhs.y - lhs.y * rhs.x);
 }
 
+extern inline float Distance(const Vector3 & lhs, const Vector3 & rhs) {
+	return (lhs - rhs).Length();
+}
+
 extern inline bool operator != (const Vector3& lhs, const Vector3& rhs)
 {
 	return !FloatEqual(lhs.x, rhs.x) || !FloatEqual(lhs.y, rhs.y) || !FloatEqual(lhs.z, rhs.z);

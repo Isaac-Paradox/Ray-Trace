@@ -35,7 +35,11 @@ namespace RayTraceRenderer
 		//Perspective
 		float m_fFov = 60.0f;
 
-		protected:
+		bool m_bOpenDepthOfField = false;
+		float m_fLensRadius = 1.0f;
+		float m_fFocus = 10.0f;
+
+
 		bool m_bPerspectiveDataDirty = true;
 
 		public:
@@ -63,6 +67,18 @@ namespace RayTraceRenderer
 		inline float GetFov() const { return m_fFov; }
 
 		inline void SetFov(float value) { m_fFov = value; m_bPerspectiveDataDirty = true; }
+
+		inline bool DepthOfFieldActive() const { return m_bOpenDepthOfField; }
+
+		inline void OpenDepthOfField(float value) { m_fLensRadius = value * 0.5f; m_bOpenDepthOfField = true; m_bPerspectiveDataDirty = true; }
+
+		inline void CloseDepthOfField() { m_bOpenDepthOfField = false; m_bPerspectiveDataDirty = true; }
+
+		inline float GetAperture() const { return m_fLensRadius * 2.0f; }
+
+		inline float GetFocus() const { return m_fFocus; }
+
+		inline void SetFocus(float value) { m_fFocus = value; if(m_bOpenDepthOfField) m_bPerspectiveDataDirty = true; }
 
 		protected:
 

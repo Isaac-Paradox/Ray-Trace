@@ -154,6 +154,8 @@ inline float Dot(const Vector3& lhs, const Vector3& rhs);
 
 inline Vector3 Cross(const Vector3& lhs, const Vector3& rhs);
 
+inline float Distance (const Vector3& lhs, const Vector3& rhs);
+
 inline bool operator != (const Vector3& lhs, const Vector3& rhs);
 
 inline bool operator == (const Vector3& lhs, const Vector3& rhs);
