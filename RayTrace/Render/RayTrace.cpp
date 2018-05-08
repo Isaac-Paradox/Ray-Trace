@@ -1,4 +1,4 @@
-#include"RayTrace.h"
+ï»¿#include"RayTrace.h"
 void RayTraceRenderer::RayTraceCamera::Draw(const ColliderList& colliderObjects) {
 	if (m_bPerspectiveDataDirty) {
 		_UpdateRayScanData();
@@ -51,22 +51,22 @@ void RayTraceRenderer::RayTraceCamera::_RayCatchColor(Ray & ray, const ColliderL
 	}
 }
 
-//ÓÃÓÚ½ÃÕıÑÕÉ«
+//ç”¨äºçŸ«æ­£é¢œè‰²
 void RayTraceRenderer::RayTraceCamera::_WriteColor(Color & target, const Color & value) {
-	//target.x = sqrtf(value.x);
-	//target.y = sqrtf(value.y);
-	//target.z = sqrtf(value.z);
-	target = value;
+	target.x = sqrtf(value.x);
+	target.y = sqrtf(value.y);
+	target.z = sqrtf(value.z);
+	//target = value;
 }
 
 void RayTraceRenderer::RayTraceCamera::_UpdateRayScanData() {
-	float height = std::tanf(m_fFov * PI / 360);//¿ÉÒÔ¿¼ÂÇÊÖËã1 / 360 È»ºóÖ±½ÓÌî×ÖÃæÖµ
+	float height = std::tanf(m_fFov * PI / 360);//å¯ä»¥è€ƒè™‘æ‰‹ç®—1 / 360 ç„¶åç›´æ¥å¡«å­—é¢å€¼
 	float widht = Aspect() * height;
 
 	m_vOrigin = m_tTransform.GetLocalPosition();
 	m_vHorizontal = m_tTransform.Right();
 	m_vVertical = m_tTransform.Up();
-	Vector3 forward = m_tTransform.Forward();//Õâ¸öµÄ³¤¶ÈºÍheightÊ¹ÓÃÍ¬Ò»¸öÒ»¸öµ¥Î»³¤¶È
+	Vector3 forward = m_tTransform.Forward();//è¿™ä¸ªçš„é•¿åº¦å’Œheightä½¿ç”¨åŒä¸€ä¸ªä¸€ä¸ªå•ä½é•¿åº¦
 
 	m_vHorizontal *= widht;
 	m_vVertical *= height;
