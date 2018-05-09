@@ -43,7 +43,7 @@ void RayTraceRenderer::RayTraceCamera::_RayCatchColor(Ray & ray, const ColliderL
 	}
 	RayCastHitRecord record;
 	Color attenuation;
-	if (colliderObjects.Hit(ray, step == 0 ? m_fNear : fEpsilon, m_fFar, record)) {
+	if (colliderObjects.Hit(ray, step == 0 ? m_fNear : 0.001, m_fFar, record)) {
 		if (record.mat->Scatter(ray, record, attenuation)) {
 			_RayCatchColor(ray, colliderObjects, col, step + 1);
 			col *= attenuation;
