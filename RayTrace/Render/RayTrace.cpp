@@ -7,21 +7,30 @@ void RayTraceRenderer::RayTraceCamera::Draw(const ColliderList& colliderObjects)
 	unsigned int pixelWidth = m_rTarget.Width();
 	unsigned int pixelHeight = m_rTarget.Height();
 
-	Ray ray;
-	Color sampledColor;
-	Color color;
-	Color** frameBuffer = m_rTarget.GetFrameBuffer();
+	//thread
+	std::vector<std::thread> threads;
 	for (size_t i = 0; i < pixelHeight; ++i) {
-		for (size_t j = 0; j < pixelWidth; ++j) {
-			color.SetTo(0, 0, 0);
-			for (size_t s = 0; s < c_nSample; ++s) {
-				_GetRay(ray, float(j + Random()) / pixelWidth, float(i + Random()) / pixelHeight);
-				_RayCatchColor(ray, colliderObjects, sampledColor);
-				color += sampledColor;
-			}
-			color /= (float)c_nSample;
-			_WriteColor(frameBuffer[i][j], color);
+		threads.emplace_back(&RayTraceCamera::_DrawOnePixel, std::ref(*this), colliderObjects, i, pixelWidth, pixelHeight);
+	}
+
+	for (size_t i = 0; i < pixelHeight; ++i) {
+			threads[i].join();
+	}
+}
+
+void RayTraceRenderer::RayTraceCamera::_DrawOnePixel(const ColliderList & colliderObjects, unsigned int i, unsigned int pixelWidth, unsigned int pixelHeight) {
+	for (size_t j = 0; j < pixelWidth; ++j) {
+		Ray ray;
+		Color sampledColor;
+		Color color;
+		Color** frameBuffer = m_rTarget.GetFrameBuffer();
+		for (size_t s = 0; s < c_nSample; ++s) {
+			_GetRay(ray, float(j + Random()) / pixelWidth, float(i + Random()) / pixelHeight);
+			_RayCatchColor(ray, colliderObjects, sampledColor);
+			color += sampledColor;
 		}
+		color /= (float)c_nSample;
+		_WriteColor(frameBuffer[i][j], color);
 	}
 }
 
@@ -43,7 +52,7 @@ void RayTraceRenderer::RayTraceCamera::_RayCatchColor(Ray & ray, const ColliderL
 	}
 	RayCastHitRecord record;
 	Color attenuation;
-	if (colliderObjects.Hit(ray, step == 0 ? m_fNear : 0.001, m_fFar, record)) {
+	if (colliderObjects.Hit(ray, step == 0 ? m_fNear : 0.001f, m_fFar, record)) {
 		if (record.mat->Scatter(ray, record, attenuation)) {
 			_RayCatchColor(ray, colliderObjects, col, step + 1);
 			col *= attenuation;

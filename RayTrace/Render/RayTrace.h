@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include<math.h>
+#include<thread>
 #include "../Object/GameObject.h"
 #include "RenderTarget.h"
 #include"../Collider/Collider.h"
@@ -10,7 +11,7 @@ namespace RayTraceRenderer
 	class RayTraceCamera : public IComponent
 	{
 		private:
-		const unsigned int c_nSample = 16;
+		const unsigned int c_nSample = 128;
 		const int c_nMaxStep = 64;
 		const Color c_cSkyBoyLow = Color(1.0f, 1.0f, 1.0f);//暂时代替天空盒用
 		const Color c_cSkyBoyTop = Color(0.5f, 0.7f, 1.0f);
@@ -84,6 +85,8 @@ namespace RayTraceRenderer
 		inline void SetFocus(float value) { m_fFocus = value; if(m_bOpenDepthOfField) m_bPerspectiveDataDirty = true; }
 
 		protected:
+
+		void _DrawOnePixel(const ColliderList& colliderObjects, unsigned int i, unsigned int pixelWidth, unsigned int pixelHeight);
 
 		inline void _GetRay(Ray& ray, float u, float v) const;
 
